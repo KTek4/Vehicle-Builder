@@ -8,29 +8,16 @@ import Wheel from "./Wheel.js";
 // define the Cli class
 class Cli {
   // TODO: update the vehicles property to accept Truck and Motorbike objects as well
-  Trucks: Truck[];
-  Motorbikes: Motorbike[];
-
-  // constructor(Trucks: Truck[], Motorbikes: Motorbike[]) {
-  //   this.Trucks = Trucks;
-  //   this.Motorbikes = Motorbikes;
-  // }
-  //not able to use more than one constructor
-
-  // cli(vehicle: Truck | Motorbike): void;
-  // cli doesn't exist, but I don't understand how tow exists in the example
-
-  // Truck.union(Motorbike);
-  //first attempt at a union function, I don't think I did this right either
-
+  vehicles: (Car | Truck | Motorbike)[]
+  
   // TODO: You will need to use the Union operator to define additional types for the array
   // TODO: See the AbleToTow interface for an example of how to use the Union operator
-  vehicles: (Car)[];
+
   selectedVehicleVin: string | undefined;
   exit: boolean = false;
 
   // TODO: Update the constructor to accept Truck and Motorbike objects as well
-  constructor(vehicles: (Car)[]) {
+  constructor(vehicles: (Car | Truck | Motorbike)[]) {
     this.vehicles = vehicles;
   }
 
