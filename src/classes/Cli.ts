@@ -294,13 +294,12 @@ class Cli {
       ])
       .then((answers) => {
         // TODO: check if the selected vehicle is the truck
-        if (answers.vehicleToTow.vin === Truck) {
+        if (answers.vehicleToTow.vin === selectedTruck.vin) {
           // TODO: if it is, log that the truck cannot tow itself then perform actions on the truck to allow the user to select another action
-          console.log(`${Truck} cannot tow itself.`);
+          console.log("Truck cannot tow itself.");
           this.performActions();
-        } 
         // TODO: if it is not, tow the selected vehicle then perform actions on the truck to allow the user to select another action
-        else {
+      } else {
           selectedTruck.tow(answers.vehicleToTow);
           this.performActions();
         }
@@ -319,7 +318,7 @@ class Cli {
           choices: [
             'Print details',
             'Start vehicle',
-            'Tow vehicle',
+            'Tow a vehicle',
             'Accelerate 5 MPH',
             'Decelerate 5 MPH',
             'Stop vehicle',
@@ -391,14 +390,20 @@ class Cli {
             }
           }
         // TODO: add statements to perform the tow action only if the selected vehicle is a truck.
-        } else if (answers.action === 'Tow vehicle') {
+        } else if (answers.action === 'Tow a vehicle') {
             // Call the findVehicleToTow method to find a vehicle to tow and pass the selected truck as an argument.
             for (let i=0; i<this.vehicles.length; i++) {
               if (this.vehicles[i].vin === this.selectedVehicleVin) {
                 if (this.vehicles[i] instanceof Truck) {
-                  this.findVehicleToTow(this.vehicles[i] as Truck);
+                  if (this.vehicles[i].started === true) {
+                    this.findVehicleToTow(this.vehicles[i] as Truck);
                   // After calling the findVehicleToTow method, you will need to return to avoid instantly calling the performActions method again since findVehicleToTow is asynchronous.
                   return;
+                  } else {
+                    console.log("Start the truck, please.");
+                  }
+                } else {
+                  console.log("This vehicle cannot tow.");
                 }
               }
             }
@@ -407,8 +412,15 @@ class Cli {
           for (let i=0; i<this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               if (this.vehicles[i] instanceof Motorbike) {
-                (this.vehicles[i] as Motorbike).wheelie();
-                return;
+                if (this.vehicles[i].started === true) {
+                  (this.vehicles[i] as Motorbike).wheelie();
+                    this.performActions();
+                  return;
+                } else {
+                  console.log("Start the Motorbike, please.");
+                }
+              } else {
+                console.log("This vehicle cannot perform wheelies!");
               }
             }
           }
